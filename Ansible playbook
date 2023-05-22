@@ -1,3 +1,6 @@
+ansible-playbook install_git.yml
+
+######
 ---
 - name: Install Git on Ubuntu and Windows Servers
   hosts: all
