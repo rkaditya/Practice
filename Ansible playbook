@@ -1,0 +1,68 @@
+---
+- name: Install Git on Ubuntu and Windows Servers
+  hosts: all
+  gather_facts: false
+  become: yes
+
+  tasks:
+    - name: Install Git on Ubuntu
+      when: "'ubuntu' in inventory_hostname"
+      apt:
+        name: git
+        state: present
+
+    - name: Install Git on Windows
+      when: "'windows' in inventory_hostname"
+      win_chocolatey:
+        name: git
+        state: present
+        
+        
+##########################################
+---
+- name: Install Git on servers
+  hosts: all
+  gather_facts: false
+  become: yes
+
+  tasks:
+    - name: Install Git on Windows
+      win_chocolatey:
+        name: git
+        state: present
+      when: ansible_os_family == 'Windows'
+
+    - name: Install Git on Ubuntu
+      apt:
+        name: git
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Install Git on CentOS
+      yum:
+        name: git
+        state: present
+      when: ansible_distribution == 'CentOS'
+#########################
+---
+- name: Install and start Git on multiple servers
+  hosts: all  # Replace with your server inventory or group name
+  become: true  # Enable privilege escalation (sudo)
+
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+      when: ansible_pkg_mgr == 'apt'
+
+    - name: Install Git
+      package:
+        name: git
+        state: present
+      when: ansible_pkg_mgr == 'apt'
+
+    - name: Start Git service
+      service:
+        name: git
+        state: started
+      when: ansible_pkg_mgr == 'apt'
