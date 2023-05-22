@@ -10,7 +10,10 @@ EXPOSE <port_number>
 CMD ["<command_to_start_web_server>"]
 
 ################################################
-docker build -t my-web-server .
+docker build -t my-web-server 
+docker run -d -p <host_port>:<container_port> my-web-server
+docker run -d -p 80:80 my-nginx-image
+
 ########################################
 FROM ubuntu:latest
 
