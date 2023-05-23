@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Number of seconds to monitor CPU utilization
+duration=10
+
+# Function to calculate CPU utilization percentage
+get_cpu_utilization() {
+  cpu_utilization=$(top -b -n 1 | grep "%Cpu(s)" | awk '{print $2}' | cut -d "." -f 1)
+  echo "CPU Utilization: $cpu_utilization%"
+}
+
+# Main script logic
+echo "Monitoring CPU utilization for $duration seconds..."
+echo ""
+
+# Monitor CPU utilization for the specified duration
+for ((i=1; i<=$duration; i++)); do
+  echo "Sample $i:"
+  get_cpu_utilization
+  sleep 1
+  echo ""
+done
+
+echo "CPU utilization monitoring complete."
+
+####################################
