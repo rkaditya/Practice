@@ -23,4 +23,27 @@ done
 
 echo "CPU utilization monitoring complete."
 
-####################################
+#################WITH EMAIL###########
+#!/bin/bash
+
+# Threshold for CPU utilization (in percentage)
+THRESHOLD=80
+
+# Get current CPU utilization
+CPU_UTIL=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | awk -F. '{print $1}')
+
+# Check if CPU utilization exceeds the threshold
+if [ "$CPU_UTIL" -gt "$THRESHOLD" ]; then
+    # CPU utilization is above the threshold, send email notification
+    SUBJECT="High CPU Utilization Alert"
+    MESSAGE="CPU utilization is currently at $CPU_UTIL%. Please investigate."
+    RECIPIENT="aditya@example.com"
+
+    echo "$MESSAGE" | mail -s "$SUBJECT" "$RECIPIENT"
+fi
+
+
+
+
+
+
